@@ -1,0 +1,75 @@
+<div class="container" ng-controller="usuariosController">
+
+    <div class="row">
+
+        <!-- Title Page -->
+        <div class="col-md-12">
+            <h5 class="my-4">Usuarios <i class="fas fa-users-cog"></i></h5><hr />
+        </div>
+
+        <div class="col-md-12">
+
+            <div class="alert alert-warning" role="alert" ng-if="msg">
+                <p class="mb-0"><small>{{msg.msg}}</small>
+                    <a href="" class="link-usu float-right" ng-click="reload()"><i class="fas fa-times"></i></a></p>
+            </div>
+
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="small pl-1 pt-2 pb-2 pr-2">Nome</th>
+                        <th class="small pl-1 pt-2 pb-2 pr-2">Email</th>
+                        <th class="small pl-1 pt-2 pb-2 pr-2">Nascimento</th>
+                        <th class="small pl-1 pt-2 pb-2 pr-2">Genero</th>
+                        <th class="small pl-1 pt-2 pb-2 pr-2">Local</th>
+                        <th class="small pl-1 pt-2 pb-2 pr-2">TS</th>
+                        <th class="small pl-1 pt-2 pb-2 pr-2">Status</th>
+                        <th class="small pl-1 pt-2 pb-2 pr-2">Apagar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="usuario in usuarios">
+                        <td class="small p-1" title="{{usuario._id}}">{{usuario.nome}}</td>
+                        <td class="small p-1">{{usuario.email}}</td>
+                        <td class="small p-1">{{usuario.nascimento | date: 'dd/MM/yyyy':'UTC'}}</td>
+                        <td class="small p-1">{{usuario.genero}}</td>
+                        <td class="small p-1">{{usuario.cidade}}, {{usuario.estado}}</td>
+                        <td class="small p-1">{{usuario.tipo_sanguineo}}</td>
+                        <td class="small p-1">
+                            <i class="fas fa-check-circle text-success" ng-if="usuario.status === true" title="ativo"></i>
+                            <i class="fas fa-ban text-danger" ng-if="usuario.status === false" title="inativo"></i>
+                        </td>
+                        <td class="small p-1">
+                            <a href="" title="Apagar Usuário" class="link-usu" data-toggle="modal" data-target="#apagar-usuario" ng-click="confirmUsu(usuario)">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal Apagar Usuário -->
+    <div class="modal fade" id="apagar-usuario" tabindex="-1" role="dialog" aria-labelledby="modalLabelApagarUsuario" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabelApagarUsuario">Apagar Usuario <i class="fas fa-user"></i></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja apagar {{usu.email}}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-danger" ng-click="delete(usu._id)" data-dismiss="modal">apagar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

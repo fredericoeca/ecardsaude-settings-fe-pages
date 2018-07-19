@@ -1,0 +1,27 @@
+<!-- Page Content -->
+<div class="container" ng-controller="usuariosController">
+
+    <div class="row">
+
+        <!-- Blog Entries Column -->
+        <div class="col-md-4">
+
+            <h5 class="my-4">Foto do Perfil <i class="fas fa-user-plus"></i></h5>
+            <hr />
+
+            <form class="form-horizontal" ng-submit="submit(usuario)">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="file" class="form-control" ng-file-model="usuario.foto" name="foto" id="foto" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit"  value="salvar"  class="btn btn-primary"/>
+                    <button type="button" class="btn btn-secondary" onClick="history.go(-1)">voltar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

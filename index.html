@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="img/vacina.png">
+
+    <title>eCard da Saúde</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- AngularJS -->
+    <script src="vendor/angularjs/angular.min.js"></script>
+    <script src="vendor/angularjs/angular-route.min.js"></script>
+    <script src="vendor/angularjs/ngStorage.js"></script>
+
+    <!-- Modules -->
+    <script src="app.js"></script>
+
+    <!-- Route -->
+    <script src="vendor/settings/routes.js"></script>
+
+      <!-- Controllers -->
+    <script src="vendor/controller/loginController.js"></script>
+    <script src="vendor/controller/homeController.js"></script>
+    <script src="vendor/controller/notificationController.js"></script>
+    <script src="vendor/controller/usuariosController.js"></script>
+    <script src="vendor/controller/forbiddenController.js"></script>
+    <script src="vendor/controller/vacinaController.js"></script>
+    <script src="vendor/controller/researchController.js"></script>
+    <script src="vendor/controller/municipiosController.js"></script>
+    <script src="vendor/controller/viagensController.js"></script>
+    <script src="vendor/controller/vacinaPetController.js"></script>
+    <script src="vendor/controller/viagemPetController.js"></script>
+
+    <!-- Services -->
+    <script src="vendor/service/loginAPI.js"></script>
+    <script src="vendor/service/usuarioAPI.js"></script>
+    <script src="vendor/service/notificationAPI.js"></script>
+    <script src="vendor/service/vacinaAPI.js"></script>
+    <script src="vendor/service/authInterceptor.js"></script>
+    <script src="vendor/service/interceptorPush.js"></script>
+    <script src="vendor/service/researchesAPI.js"></script>
+    <script src="vendor/service/municipiosAPI.js"></script>
+    <script src="vendor/service/viagensAPI.js"></script>
+    <script src="vendor/service/vacinaPetAPI.js"></script>
+
+    <!-- Directives -->
+    <script src="vendor/directives/mask_data.js"></script>
+    <script src="vendor/directives/ng-file-model.js"></script>
+    <script src="vendor/directives/dataInput.js"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="css/blog-home.css" rel="stylesheet">
+    <link href="css/modern-business.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-info fixed-top" ng-controller="loginController as ctrl">
+      <div class="container">
+        <a class="navbar-brand" href="">eVACINA</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active" ng-show="$root.usuario !== null">
+              <a class="nav-link" href="#/home"><i class="fas fa-home"></i> Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item dropdown" ng-show="$root.usuario !== null">
+              <a class="nav-link dropdown-toggle" href="" id="navbarDropdown3" role="button" data-toggle="dropdown"
+                 aria-haspopup="true" aria-expanded="false"><i class="fas fa-syringe"></i> Vacinas</a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown3">
+                  <a class="dropdown-item" href="#/vacinas"><i class="fas fa-user"></i> Humanos</a>
+                  <a class="dropdown-item" href="#/vacinaspet"><i class="fas fa-paw"></i> Pets</a>
+              </div>
+            </li>
+            <li class="nav-item" ng-show="$root.usuario.admin === true">
+              <a class="nav-link" href="#/notification"><i class="fas fa-bell"></i> Notificações</a>
+            </li>
+            <li class="nav-item dropdown" ng-show="$root.usuario !== null">
+              <a class="nav-link dropdown-toggle" href="" id="navbarDropdown2" role="button" data-toggle="dropdown"
+                 aria-haspopup="true" aria-expanded="false"><i class="fas fa-rocket"></i> Viagens</a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                  <a class="dropdown-item" href="#/viagens"><i class="fas fa-user"></i> Cuidados com Saúde</a>
+              </div>
+            </li>
+            <li class="nav-item dropdown" ng-show="$root.usuario !== null">
+              <a class="nav-link dropdown-toggle" href="" id="navbarDropdown1" role="button" data-toggle="dropdown"
+                 aria-haspopup="true" aria-expanded="false">Olá, {{$root.usuario.nome}}
+                  <img ng-hide="!$root.usuario.foto" ng-src="{{$root.usuario.foto}}" class="rounded-circle" width="25" height="25"/></a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown1">
+                <a class="dropdown-item" href="#/usuarios" ng-show="$root.usuario.admin === true"><i class="fas fa-users-cog"></i> Usuários</a>
+                <a class="dropdown-item" href="" ng-click="logout()"><i class="fas fa-sign-in-alt"></i> Sair</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="ng-view" autoscroll="true"></div>
+
+    <!-- Footer -->
+    <footer class="py-3 bg-info" ng-if="$root.usuario !== null">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; VacinaTech 2018</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+    <footer class="py-3 bg-info fixed-bottom" ng-if="$root.usuario === null">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; VacinaTech 2018</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  </body>
+
+</html>

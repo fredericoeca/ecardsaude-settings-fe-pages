@@ -1,0 +1,289 @@
+<div class="container" ng-controller="vacinaController">
+
+    <div class="row">
+
+        <!-- Title Page -->
+        <div class="col-md-12">
+            <h5 class="my-4 pt-1"><i class="fas fa-syringe"></i> Cartão de Vacina</h5><hr class="mb-1" />
+        </div>
+
+        <div class="col-md-12">
+            <i class="fas fa-user text-secondary"></i> &nbsp;&nbsp;&nbsp;<small>{{$root.familiar.nome}}</small><br />
+            <i class="fas fa-birthday-cake text-secondary"></i> &nbsp;&nbsp;&nbsp;<small>{{$root.familiar.nascimento | date:'dd/MM/yyyy':'UTC'}}</small><br/>
+            <i class="fas fa-tint text-secondary"></i> &nbsp;&nbsp;&nbsp;<small>{{$root.familiar.tipo_sanguineo}}</small><br/>
+            <i class="fas fa-venus-mars text-secondary"></i> &nbsp;&nbsp;<small>{{$root.familiar.genero}}</small>
+            <hr class="mt-1 mb-1" />
+            <div class="row text-success">
+                <div class="col-sm-9"><p><i class="fas fa-calendar-plus"></i> <small>Pertence ao Calendário Nacional de Vacinação 2018</small></p></div>
+                <div class="col-sm-3">
+                    <div class="custom-control custom-radio custom-control-inline small">
+                        <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input" ng-model="vacina.pni" value="true">
+                        <label class="custom-control-label" for="customRadioInline1">Calendário</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline small">
+                        <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input" ng-model="vacina.pni" value="">
+                        <label class="custom-control-label" for="customRadioInline2">Completo</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <h5 class="text-warning mt-3 pl-4">Criança <hr /></h5>
+                    <div class="ml-4 bd-callout bd-callout-warning">
+                        <div class="row pl-2">
+                            <div class="col-sm-4 div-vacina pb-2" ng-repeat="vacina in vacinas | filter:vacina.pni" ng-if="vacina.grupoAlvo === 'Criança'">
+                                <div class="card br-0">
+
+                                    <div class="card-body p-0">
+                                        <div class="row m-0">
+                                            <div class="col-sm-3 p-0">
+                                                <div class="alert alert-warning p-0 m-0 br-0" style="height: 100%;" role="alert">
+                                                    <p class="small text-sm-center mb-0 vertical">{{exIdade(vacina)}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-5 pl-1 p-0">
+                                                <p class="text-vacina pt-1" style="height: 42px;"><b>{{vacina.vacina}}</b></p>
+                                                <p class="text-vacina small" ng-if="vacina.pni"><i class="fas fa-calendar-plus text-success"></i></p>
+                                                <p class="text-vacina small" ng-if="!vacina.pni">Rede Pública: {{vacina.publica}}</p>
+                                                <p class="text-vacina small">{{vacina.dose}}</p>
+                                            </div>
+
+                                            <div class="col-sm-4 p-0" ng-if="isRegistro(vacina, $root.familiar) === true">
+                                                <div class="alert alert-success p-0 m-0 br-0" style="height: 100%;" role="alert"
+                                                     ng-repeat="reg in $root.usuario.registro_vacinas" ng-if="reg.vacina === vacina.vacina && reg.dose === vacina.dose && reg.paciente === $root.familiar._id">
+
+                                                    <p class="small mb-0 text-center">{{reg.data | date:'dd/MM/yyyy':'UTC'}}</p>
+                                                    <p class="small mb-0 text-center">{{reg.local}}</p>
+                                                    <p class="small mb-0 text-center">{{reg.agente}}</p>
+                                                    <p class="small mb-0 text-center">{{reg.lote}}</p>
+                                                    <p class="small mb-0 text-center">Rede {{reg.rede}}</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4 p-0" ng-if="isRegistro(vacina, $root.familiar) === false">
+
+                                                <div class="alert alert-info p-0 m-0 br-0" ng-if="emDia(vacina, $root.familiar) === true" style="height: 100%;" role="alert">
+                                                    <p class="small mb-0 text-center vertical">Em Dia</p>
+                                                </div>
+
+                                                <div class="alert alert-danger p-0 m-0 br-0" ng-if="emDia(vacina, $root.familiar) === false" style="height: 100%;" role="alert">
+                                                    <p class="small mb-0 text-center vertical">Atrasada</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <h5 class="text-success mt-3 pl-4">Adolecente <hr /></h5>
+                    <div class="ml-4 bd-callout bd-callout-success">
+                        <div class="row pl-2">
+                            <div class="col-sm-4 div-vacina pb-2" ng-repeat="vacina in vacinas | filter:vacina.pni" ng-if="vacina.grupoAlvo === 'Adolecente'">
+                                <div class="card br-0">
+
+                                    <div class="card-body p-0">
+                                        <div class="row m-0">
+                                            <div class="col-sm-3 p-0">
+                                                <div class="alert alert-success p-0 m-0 br-0" style="height: 100%;" role="alert">
+                                                    <p class="small text-sm-center mb-0 vertical">{{exIdade(vacina)}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-5 pl-1 p-0">
+                                                <p class="text-vacina pt-1" style="height: 42px;"><b>{{vacina.vacina}}</b></p>
+                                                <p class="text-vacina small" ng-if="vacina.pni"><i class="fas fa-calendar-plus text-success"></i></p>
+                                                <p class="text-vacina small">{{vacina.dose}}</p>
+                                            </div>
+
+                                            <div class="col-sm-4 p-0" ng-if="isRegistro(vacina, $root.familiar) === true">
+                                                <div class="alert alert-success p-0 m-0 br-0" style="height: 100%;" role="alert"
+                                                     ng-repeat="reg in $root.usuario.registro_vacinas" ng-if="reg.vacina === vacina.vacina && reg.dose === vacina.dose && reg.paciente === $root.familiar._id">
+
+                                                    <p class="small mb-0 text-center">{{reg.data | date:'dd/MM/yyyy':'UTC'}}</p>
+                                                    <p class="small mb-0 text-center">{{reg.local}}</p>
+                                                    <p class="small mb-0 text-center">{{reg.agente}}</p>
+                                                    <p class="small mb-0 text-center">{{reg.lote}}</p>
+                                                    <p class="small mb-0 text-center">Rede {{reg.rede}}</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4 p-0" ng-if="isRegistro(vacina, $root.familiar) === false">
+
+                                                <div class="alert alert-info p-0 m-0 br-0" ng-if="emDia(vacina, $root.familiar) === true" style="height: 100%;" role="alert">
+                                                    <p class="small mb-0 text-center vertical">Em Dia</p>
+                                                </div>
+
+                                                <div class="alert alert-danger p-0 m-0 br-0" ng-if="emDia(vacina, $root.familiar) === false" style="height: 100%;" role="alert">
+                                                    <p class="small mb-0 text-center vertical">Atrasada</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <h5 class="text-info mt-3 pl-4">Adulto <hr /></h5>
+                    <div class="ml-4 bd-callout bd-callout-info">
+                        <div class="row pl-2">
+                            <div class="col-sm-4 div-vacina pb-2" ng-repeat="vacina in vacinas | filter:vacina.pni" ng-if="vacina.grupoAlvo === 'Adulto'">
+                                <div class="card br-0">
+
+                                    <div class="card-body p-0">
+                                        <div class="row m-0">
+                                            <div class="col-sm-3 p-0">
+                                                <div class="alert alert-info p-0 m-0 br-0" style="height: 100%;" role="alert">
+                                                    <p class="small text-sm-center mb-0 vertical">{{exIdade(vacina)}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-5 pl-1 p-0">
+                                                <p class="text-vacina pt-1" style="height: 42px;"><b>{{vacina.vacina}}</b></p>
+                                                <p class="text-vacina small" ng-if="vacina.pni"><i class="fas fa-calendar-plus text-success"></i></p>
+                                                <p class="text-vacina small">{{vacina.dose}}</p>
+                                            </div>
+
+                                            <div class="col-sm-4 p-0" ng-if="isRegistro(vacina, $root.familiar) === true">
+                                                <div class="alert alert-success p-0 m-0 br-0" style="height: 100%;" role="alert"
+                                                     ng-repeat="reg in $root.usuario.registro_vacinas" ng-if="reg.vacina === vacina.vacina && reg.dose === vacina.dose && reg.paciente === $root.familiar._id">
+
+                                                    <p class="small mb-0 text-center">{{reg.data | date:'dd/MM/yyyy':'UTC'}}</p>
+                                                    <p class="small mb-0 text-center">{{reg.local}}</p>
+                                                    <p class="small mb-0 text-center">{{reg.agente}}</p>
+                                                    <p class="small mb-0 text-center">{{reg.lote}}</p>
+                                                    <p class="small mb-0 text-center">Rede {{reg.rede}}</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4 p-0" ng-if="isRegistro(vacina, $root.familiar) === false">
+
+                                                <div class="alert alert-info p-0 m-0 br-0" ng-if="emDia(vacina, $root.familiar) === true" style="height: 100%;" role="alert">
+                                                    <p class="small mb-0 text-center vertical">Em Dia</p>
+                                                </div>
+
+                                                <div class="alert alert-danger p-0 m-0 br-0" ng-if="emDia(vacina, $root.familiar) === false" style="height: 100%;" role="alert">
+                                                    <p class="small mb-0 text-center vertical">Atrasada</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <h5 class="text-secondary mt-3 pl-4">Idoso <hr /></h5>
+                    <div class="ml-4 bd-callout bd-callout-secundary">
+                        <div class="row pl-2">
+                            <div class="col-sm-4 div-vacina pb-2" ng-repeat="vacina in vacinas | filter:vacina.pni" ng-if="vacina.grupoAlvo === 'Idoso'">
+                                <div class="card br-0">
+
+                                    <div class="card-body p-0">
+                                        <div class="row m-0">
+                                            <div class="col-sm-3 p-0">
+                                                <div class="alert alert-secondary p-0 m-0 br-0" style="height: 100%;" role="alert">
+                                                    <p class="small text-sm-center mb-0 vertical">{{exIdade(vacina)}}</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-5 pl-1 p-0">
+                                                <p class="text-vacina pt-1" style="height: 42px;"><b>{{vacina.vacina}}</b></p>
+                                                <p class="text-vacina small" ng-if="vacina.pni"><i class="fas fa-calendar-plus text-success"></i></p>
+                                                <p class="text-vacina small">{{vacina.dose}}</p>
+                                            </div>
+
+                                            <div class="col-sm-4 p-0" ng-if="isRegistro(vacina, $root.familiar) === true">
+                                                <div class="alert alert-success p-0 m-0 br-0" style="height: 100%;" role="alert"
+                                                     ng-repeat="reg in $root.usuario.registro_vacinas" ng-if="reg.vacina === vacina.vacina && reg.dose === vacina.dose && reg.paciente === $root.familiar._id">
+
+                                                    <p class="small mb-0 text-center">{{reg.data | date:'dd/MM/yyyy':'UTC'}}</p>
+                                                    <p class="small mb-0 text-center">{{reg.local}}</p>
+                                                    <p class="small mb-0 text-center">{{reg.agente}}</p>
+                                                    <p class="small mb-0 text-center">{{reg.lote}}</p>
+                                                    <p class="small mb-0 text-center">Rede {{reg.rede}}</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4 p-0" ng-if="isRegistro(vacina, $root.familiar) === false">
+
+                                                <div class="alert alert-info p-0 m-0 br-0" ng-if="emDia(vacina, $root.familiar) === true" style="height: 100%;" role="alert">
+                                                    <p class="small mb-0 text-center vertical">Em Dia</p>
+                                                </div>
+
+                                                <div class="alert alert-danger p-0 m-0 br-0" ng-if="emDia(vacina, $root.familiar) === false" style="height: 100%;" role="alert">
+                                                    <p class="small mb-0 text-center vertical">Atrasada</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" ng-if="$root.familiar.genero === 'Feminino'">
+                <div class="col-sm-12">
+                    <h5 class="text-danger mt-3 pl-4">Gestante <hr /></h5>
+                    <div class="ml-4 bd-callout bd-callout-danger">
+                        <div class="row pl-2">
+                            <div class="col-sm-4 div-vacina pb-2" ng-repeat="vacina in vacinas | filter:vacina.pni" ng-if="vacina.grupoAlvo === 'Gestante'">
+                                <div class="card br-0">
+
+                                    <div class="card-body p-0">
+                                        <div class="row m-0">
+                                            <div class="col-sm-3 p-0">
+                                                <div class="alert alert-danger p-0 m-0 br-0" style="height: 100%;" role="alert">
+                                                    <p class="small text-sm-center mb-0 vertical">{{exIdade(vacina)}} de gestação</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-5 pl-1 p-0">
+                                                <p class="text-vacina pt-1" style="height: 42px;"><b>{{vacina.vacina}}</b></p>
+                                                <p class="text-vacina small" ng-if="vacina.pni"><i class="fas fa-calendar-plus text-success"></i></p>
+                                                <p class="text-vacina small">{{vacina.dose}}</p>
+                                            </div>
+
+                                            <div class="col-sm-4 p-0" ng-if="isRegistro(vacina, $root.familiar) === true">
+                                                <div class="alert alert-success p-0 m-0 br-0" style="height: 100%;" role="alert"
+                                                     ng-repeat="reg in $root.usuario.registro_vacinas" ng-if="reg.vacina === vacina.vacina && reg.dose === vacina.dose && reg.paciente === $root.familiar._id">
+
+                                                    <p class="small mb-0 text-center">{{reg.data | date:'dd/MM/yyyy':'UTC'}}</p>
+                                                    <p class="small mb-0 text-center">{{reg.local}}</p>
+                                                    <p class="small mb-0 text-center">{{reg.agente}}</p>
+                                                    <p class="small mb-0 text-center">{{reg.lote}}</p>
+                                                    <p class="small mb-0 text-center">Rede {{reg.rede}}</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4 p-0" ng-if="isRegistro(vacina, $root.familiar) === false">
+
+                                                <div class="alert alert-info p-0 m-0 br-0" style="height: 100%;" role="alert">
+                                                    <p class="small mb-0 text-center vertical">Somente gestante</p>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

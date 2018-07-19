@@ -1,0 +1,121 @@
+<!-- Page Content -->
+<div class="container" ng-controller="loginController">
+
+    <div class="row div-central">
+
+        <!-- Blog Entries Column -->
+        <div class="col-md-4">
+
+            <h5 class="my-4">Cadastrar-se <i class="fas fa-user-plus"></i></h5>
+            <hr />
+
+            <div class="alert alert-warning" role="alert" ng-if="msg.cod === 301 || msg.cod === 302 || msg.cod === 303">
+                <p class="mb-0"><small>{{msg.msg}}{{msg.err}}</small>
+                    <a href="" class="link-usu float-right" ng-click="reload()"><i class="fas fa-times"></i></a></p>
+            </div>
+
+            <div class="alert alert-success" role="alert" ng-if="msg.cod === 304">
+                <p class="mb-0"><small>{{msg.msg}} <a href="#/login" class="link-alerta">acesse aqui</a></small>
+                    <a href="" class="link-usu float-right" ng-click="reload()"><i class="fas fa-times"></i></a></p>
+            </div>
+
+            <form role="form" name="form">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="nome"><i class="fas fa-user"></i></span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Small" ng-model="usuario.nome"
+                           aria-describedby="nome" placeholder="nome">
+                </div>
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="email1"><i class="fas fa-at"></i></span>
+                    </div>
+                    <input type="email" class="form-control" name="email" id="email" ng-model="usuario.email" ng-pattern="mail"
+                           placeholder="email" required />
+                    <span ng-show="form.email.$error.pattern" style="color:red">Email inválido! Por favor, insira um email correto.</span>
+                </div>
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="nascimento"><i class="fas fa-birthday-cake"></i></span>
+                    </div>
+                    <input type="date" class="form-control" aria-label="Small" ng-model="usuario.nascimento"
+                           placeholder="nascimento" aria-describedby="nascimento">
+                </div>
+                <div class="input-group input-group-sm mb-2">
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend ">
+                            <label class="input-group-text" for="tipo_sanguineo"><i class="fas fa-tint"></i></label>
+                        </div>
+                        <select class="custom-select custom-select-sm" id="tipo_sanguineo" ng-model="usuario.tipo_sanguineo">
+                            <option value="">tipos sanguineos...</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-group mb-3 pl-3">
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="gen_mas" name="customRadio" ng-model="usuario.genero" value="Masculino" class="custom-control-input">
+                        <label class="custom-control-label small" for="gen_mas">Masculino</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="gen_fem" name="customRadio" ng-model="usuario.genero" value="Feminino" class="custom-control-input">
+                        <label class="custom-control-label small" for="gen_fem">Feminino</label>
+                    </div>
+                </div>
+                <div ng-controller="municipiosController">
+                <div class="input-group input-group-sm mb-2">
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend ">
+                            <label class="input-group-text" for="estado"><i class="fas fa-map-marker-alt"></i></label>
+                        </div>
+                        <select class="custom-select custom-select-sm" id="estado" ng-required="true"
+                                ng-options="e.nome_uf for e in municipios track by e.sigla_uf" ng-model="usuario.estado">
+                            <option value="">estado onde mora...</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-group input-group-sm mb-2">
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend ">
+                            <label class="input-group-text" for="cidade"><i class="fas fa-map-marker-alt"></i></label>
+                        </div>
+                        <select class="custom-select custom-select-sm" id="cidade"
+                                ng-options="m.nome_municipio for m in usuario.estado.cidades track by m.nome_municipio" ng-model="usuario.cidade">
+                            <option value="">cidade onde mora...</option>
+                        </select>
+                    </div>
+                </div>
+                </div>
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="senha"><i class="fas fa-unlock-alt"></i></span>
+                    </div>
+                    <input type="password" class="form-control" name="password" ng-model="usuario.senha" ng-pattern="re"
+                           id="password" placeholder="Insira sua senha" required />
+                    <span class="col-sm-12" ng-show="form.password.$error.pattern" style="color:red">
+                        <small>A senha deve conter letras minúsculas e números minimo 6 e máximo 14 caracteres.</small></span>
+                </div>
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="validasenha"><i class="fas fa-unlock-alt"></i></span>
+                    </div>
+                    <input type="password" class="form-control" name="validepassword" ng-model="confirmacao" ng-pattern="re"
+                           id="validepassword" placeholder="Confirme a senha" required />
+                    <span class="col-sm-12" ng-show="usuario.senha !== confirmacao" style="color:red">
+                        <small>Senha não confere!</small></span>
+                </div>
+                <button type="button" class="btn btn-info btn-sm btn-block" ng-disabled="usuario.senha !== confirmacao" ng-click="save(usuario)">salvar <i class="far fa-save"></i></button>
+                <button type="reset" class="btn btn-secondary btn-sm btn-block" onClick="history.go(-1)"><i class="fas fa-angle-double-left"></i> voltar</button><br />
+            </form>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,301 @@
+<!-- Page Content -->
+<div class="container" ng-controller="notificationController">
+
+    <div class="row">
+
+        <!-- Blog Entries Column -->
+        <div class="col-md-8" >
+
+            <h5 class="my-4">Notificações <i class="far fa-bell"></i>
+                <a href="" class="btn btn-success float-right" title="Criar notificação" data-toggle="modal" data-target="#create_notification">
+                    <i class="fas fa-plus-circle"></i> Criar notificação</a>
+            </h5>
+
+            <!-- Blog Post -->
+            <div class="card mb-4" ng-repeat="notification in notifications">
+                <div class="card-body">
+                    <h5 class="card-title">{{notification.titulo}}<br /><small>{{notification.tema}}</small></h5>
+
+                    <p class="card-text text-notification">{{notification.descricao}}</p>
+                    <a href="{{notification.link}}" class="link-usu" title="Leia a notícia completa" target="_blank" ng-if="notification.link">
+                        <p class="card-text text-notification">Leia a notícia completa...</p></a><br />
+                    <p class="card-text text-notification">Região: {{notification.regiao}}</p>
+                    <p class="card-text text-notification">{{notification.observacoes}}</p>
+                    <a href="" class="btn btn-success btn-msg" ng-if="!notification.status" title="publicar" ng-click="publicar(notification)">
+                        <i class="fas fa-share-square"></i></a>
+                    <a href="" class="btn btn-info btn-msg" title="editar" data-toggle="modal" data-target="#edit-not" ng-click="confirmNot(notification)">
+                        <i class="fas fa-edit"></i></a>
+                    <a href="" class="btn btn-danger btn-msg" title="apagar" data-toggle="modal" data-target="#delete-not" ng-click="confirmNot(notification)">
+                        <i class="fas fa-trash-alt"></i></a>
+                    <a href="" class="btn btn-warning btn-warning-undo btn-msg" ng-if="notification.status" title="cancelar publicação" ng-click="cancPublicar(notification)">
+                        <i class="fas fa-reply"></i></a>
+                </div>
+                <div class="card-footer text-muted">
+                    <small>
+                        <span><i class="fas fa-ban status-color-wait"></i>
+                            Criada em {{notification.dataCriacao | date:'dd/MM/yyyy - HH:mm'}}<br /></span>
+
+                        <span ng-if="notification.dataPublicacao"><i class="fas fa-check-circle status-color-publish"></i>
+                            Publicada em {{notification.dataPublicacao | date:'dd/MM/yyyy - HH:mm'}}<br /></span>
+
+                        <span ng-if="countlike(notification) === 0"><i class="far fa-heart"></i>
+                            Nenhuma curtida.<br /></span>
+                        <span ng-if="countlike(notification) === 1"><i class="fas fa-heart"></i>
+                            {{countlike(notification)}} curtida.<br /></span>
+                        <span ng-if="countlike(notification) > 1"><i class="fas fa-heart"></i>
+                            {{countlike(notification)}} curtidas.<br /></span>
+
+                        <span ng-if="notification.dataCancelamento"><i class="fas fa-minus-circle status-color-recused"></i>
+                            Cancelada a publicação em {{notification.dataCancelamento | date:'dd/MM/yyyy - HH:mm'}}<br /></span>
+                        fonte: {{notification.fonte}}.</small>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Sidebar Widgets Column -->
+        <div class="col-md-4" ng-controller="researchController">
+
+            <!-- Search Widget -->
+            <div class="card my-4">
+                <h5 class="card-header">Notícias</h5>
+                <div class="card-body">
+                    <input type="text" class="form-control" ng-model="search" placeholder="pesquisar por...">
+                </div>
+            </div>
+
+            <!-- Categories Widget -->
+            <div class="card my-4">
+                <h5 class="card-header">Ultimas Notícias
+                    <span class="float-right"><a href="" class="link-usu" title="sincronizar novas notícias" ng-click="refresh()">
+                        <i class="fas fa-sync-alt"></i></a>
+                    </span>
+                </h5>
+                <div class="card-body">
+                    <div class="loader mb-3" align="center" ng-show="loading === true"></div>
+                    <div class="alert alert-success" role="alert" ng-show="news">
+                        <span ng-if="news.data === 0">Não foi encontrada novas notícias</span>
+                        <span ng-if="news.data === 1">{{news.data}} nova notícia encontrada</span>
+                        <span ng-if="news.data > 1">{{news.data}} novas notícias encontradas</span>
+                    </div>
+                    <div class="card mb-4" ng-repeat="research in researches | filter:search">
+                        <div class="card-body card-padding-alerta-body">
+                            <small>
+                                <p><strong><a href="{{research.link}}" class="link-usu" target="_blank">{{research.titulo}}</a></strong></p>
+                                <p>{{research.descricao}}</p>
+                                <p>{{research.data | date:'dd/MM/yyyy - hh:mm':'UTC'}}</p>
+                                <p>{{research.fonte}}</p>
+                            </small>
+                        </div>
+                        <div class="card-footer text-muted card-padding-alerta-footer">
+                            <div class="row">
+                                <div class="col-sm-4" align="center">
+                                    <a href="" class="link-usu" title="gerar notificação" data-toggle="modal" data-target="#gen-notification" ng-click="confirmRes(research)">
+                                        <i class="fas fa-share-square"></i></a>
+                                </div>
+                                <div class="col-sm-4" align="center">
+                                    <a href="" class="link-usu" title="apagar notícia" data-toggle="modal" data-target="#del-noticia" ng-click="confirmRes(research)">
+                                        <i class="far fa-trash-alt"></i></a>
+                                </div>
+                                <div class="col-sm-4" align="center" ng-if="research.new">
+                                    <i class="fas fa-sun text-success" title="Notícia encontrada na última busca"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <a href="{{research.link}}" class="link-usu">{{research.titulo}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+
+
+    <!-- Modal Create Notification -->
+    <div class="modal fade" id="create_notification" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Criar Notificação <i class="fas fa-bell"></i></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form role="form" >
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="notification.titulo" aria-describedby="titulo" placeholder="Titulo">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="notification.tipo" aria-describedby="tipo" placeholder="Tipo">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="notification.tema" aria-describedby="tema" placeholder="Tema">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <textarea class="form-control" aria-label="With textarea" ng-model="notification.descricao" placeholder="Descrição"></textarea>
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="notification.link" aria-describedby="link" placeholder="Link da notícia">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="notification.regiao" aria-describedby="regiao" placeholder="Região">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="notification.fonte" aria-describedby="fonte" placeholder="Fonte">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <textarea type="text" class="form-control" aria-label="Small" ng-model="notification.observacoes" aria-describedby="observacoes" placeholder="Observações"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="save(notification)">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Edit Notification -->
+    <div class="modal fade" id="edit-not" tabindex="-1" role="dialog" aria-labelledby="ModalLabelUpdNot" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabelUpdNot">Editar Notificação <i class="fas fa-bell"></i></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form role="form" >
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="not.titulo" aria-describedby="titulo">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="not.tipo" aria-describedby="tipo">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="not.tema" aria-describedby="tema">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <textarea class="form-control" aria-label="With textarea" ng-model="not.descricao"></textarea>
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="not.link" aria-describedby="link">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="not.regiao" aria-describedby="regiao" >
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="not.fonte" aria-describedby="fonte">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <textarea type="text" class="form-control" aria-label="Small" ng-model="not.observacoes" aria-describedby="observacoes"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="editar(not)">Editar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Delete Notification -->
+    <div class="modal fade" id="delete-not" tabindex="-1" role="dialog" aria-labelledby="modalLabelDeleteNot" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabelDeleteNot">Apagar Notificação <i class="fas fa-bell-slash"></i></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja apagar:<br /> {{not.titulo}} de {{not.dataCriacao | date:'dd/MM/yyyy':'UTC'}}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="delete(not)">Apagar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Gerar Notification from Research -->
+    <div class="modal fade" id="gen-notification" tabindex="-1" role="dialog" aria-labelledby="ModalLabelGenNot" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabelGenNot">Gerar Notificação <i class="fas fa-bell"></i></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form role="form" >
+                        <div class="input-group input-group-sm mb-3">
+                            <textarea type="text" class="form-control" aria-label="Small" ng-model="not.titulo" aria-describedby="titulo" placeholder="titulo"></textarea>
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="not.tipo" aria-describedby="tipo"placeholder="tipo">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="not.tema" aria-describedby="tema" placeholder="tema">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <textarea class="form-control" aria-label="With textarea" ng-model="not.descricao" placeholder="descrição"></textarea>
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="not.link" aria-describedby="link" placeholder="Link da notícia">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="not.regiao" aria-describedby="regiao" placeholder="região">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="not.fonte" aria-describedby="fonte" placeholder="fonte">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <textarea type="text" class="form-control" aria-label="Small" ng-model="not.observacoes" aria-describedby="observacoes" placeholder="observações"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="save(not)">Gerar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Delete Notification -->
+    <div class="modal fade" id="del-noticia" tabindex="-1" role="dialog" aria-labelledby="modalLabelDeleteNoticia" aria-hidden="true">
+        <div class="modal-dialog" role="document" ng-controller="researchController">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabelDeleteNoticia">Apagar Notícia <i class="far fa-trash-alt"></i></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja apagar:<br /> {{not.titulo}}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteRe(not)">Apagar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.container -->

@@ -1,0 +1,409 @@
+<!-- Page Content -->
+<div class="container" ng-controller="usuariosController">
+
+    <!-- Marketing Icons Section -->
+    <div class="row home">
+        <div class="col-lg-12 mb-4">
+            <div class="card">
+                <h6 class="card-header text-secondary">Registro de Vacinação <i class="fas fa-syringe"></i>
+                    <span class="float-right"><a href="" class="btn link-reg-vac btn-sm float-right btn-sm-alerta"
+                                                 data-toggle="modal" data-target="#reg-vacine"  ng-click="setId($root.usuario._id)">
+                                        registre aqui</a></span></h6>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <i class="fas fa-user text-secondary" title="nome do usuário"></i> &nbsp;&nbsp;&nbsp;<small>{{$root.usuario.nome}}</small><br />
+                            <i class="fas fa-birthday-cake text-secondary" title="aniversário"></i> &nbsp;&nbsp;&nbsp;<small>{{$root.usuario.nascimento | date:'dd/MM/yyyy':'UTC'}}</small><br/>
+                            <i class="fas fa-child text-secondary" title="idade"></i> &nbsp;&nbsp;&nbsp;<small>{{exIdade($root.usuario.nascimento)}}</small><br/>
+                            <i class="fas fa-tint text-secondary" title="tipo sanguineo"></i> &nbsp;&nbsp;&nbsp;<small>{{$root.usuario.tipo_sanguineo}}</small><br/>
+                            <i class="fas fa-venus-mars text-secondary" title="genero"></i> &nbsp;&nbsp;<small>{{$root.usuario.genero}}</small>
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="row pr-3 pl-3 scroll-div-cartao-vacina">
+                        <div class="col-sm-2 pl-1 pr-1 mb-2" ng-repeat="regVacina in $root.usuario.registro_vacinas | orderBy : 'data'"
+                                ng-if="regVacina.paciente === $root.usuario._id">
+                            <div class="card">
+                                <div class="card-body int-reg-vac" align="center">
+                                    <small>
+                                        <p class="text-info tit-dec mb-1"><b>{{regVacina.vacina}}</b></p>
+                                        <p class="tex-dec">{{regVacina.dose}}</p><hr class="dado-pet" />
+                                        <p class="tex-dec">{{regVacina.data | date:'dd/MM/yyyy':'UTC'}}</p><hr class="dado-pet" />
+                                        <p class="tex-dec">{{regVacina.local}}</p><hr class="dado-pet" />
+                                        <p class="tex-dec">{{regVacina.agente}}</p><hr class="dado-pet" />
+                                        <p class="tex-dec">{{regVacina.lote}}</p><hr class="dado-pet" />
+                                        <p class="tex-dec">Rede {{regVacina.rede}}</p><hr class="dado-pet" />
+                                    </small>
+                                </div>
+                                <div class="card-footer p-1">
+                                    <div class="row">
+                                        <div class="col-sm-6 text-center">
+                                            <a href="" class="link-usu" data-toggle="modal" data-target="#upd-vacine" ng-click="setRegVac(regVacina)">
+                                                <i class="fas fa-edit"></i></a></div>
+                                        <div class="col-sm-6 text-center">
+                                            <a href="" class="link-usu" data-toggle="modal" data-target="#del-reg-vac" ng-click="setRegVac(regVacina)">
+                                                <i class="fas fa-trash-alt"></i></a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-12 mb-4" ng-repeat="fam in $root.usuario.familiar">
+            <div class="card border-success">
+                <h6 class="card-header header-fams">Registro de Vacinação <i class="fas fa-syringe"></i>
+                    <span class="float-right"><a href="" class="btn btn-success btn-sm float-right btn-sm-alerta"
+                                                 ng-click="setVacinaFam('', fam)" title="Registrar Vacinação"
+                                                 data-toggle="modal" data-target="#reg-vacine_fam">
+                                        registre aqui</a></span></h6>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <i class="fas fa-user text-secondary" title="nome do familiar"></i> &nbsp;&nbsp;&nbsp;<small>{{fam.nome}}</small><br />
+                            <i class="fas fa-birthday-cake text-secondary" title="aniversário"></i> &nbsp;&nbsp;&nbsp;<small>{{fam.nascimento | date:'dd/MM/yyyy':'UTC'}}</small><br/>
+                            <i class="fas fa-child text-secondary" title="idade"></i> &nbsp;&nbsp;&nbsp;<small>{{exIdade(fam.nascimento)}}</small><br/>
+                            <i class="fas fa-tint text-secondary" title="tipo sanguineo"></i> &nbsp;&nbsp;&nbsp;<small>{{fam.tipo_sanguineo}}</small><br/>
+                            <i class="fas fa-venus-mars text-secondary" title="genero"></i> &nbsp;&nbsp;<small>{{fam.genero}}</small>
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="row pr-3 pl-3 scroll-div-cartao-vacina">
+                        <div class="col-sm-2 pl-1 pr-1 mb-2" ng-repeat="regVacina in $root.usuario.registro_vacinas | orderBy : 'data'"
+                                ng-if="fam._id === regVacina.paciente">
+                            <div class="card">
+                                <div class="card-body int-reg-vac" align="center">
+                                    <small>
+                                        <p class="text-info tit-dec mb-1"><b>{{regVacina.vacina}}</b></p>
+                                        <p class="tex-dec">{{regVacina.dose}}</p><hr class="dado-pet" />
+                                        <p class="tex-dec">{{regVacina.data | date:'dd/MM/yyyy':'UTC'}}</p><hr class="dado-pet" />
+                                        <p class="tex-dec">{{regVacina.local}}</p><hr class="dado-pet" />
+                                        <p class="tex-dec">{{regVacina.agente}}</p><hr class="dado-pet" />
+                                        <p class="tex-dec">{{regVacina.lote}}</p><hr class="dado-pet" />
+                                        <p class="tex-dec">Rede {{regVacina.rede}}</p><hr class="dado-pet" />
+                                    </small>
+                                </div>
+                                <div class="card-footer p-1">
+                                    <div class="row">
+                                        <div class="col-sm-6 text-center">
+                                            <a href="" class="link-usu" data-toggle="modal" data-target="#upd-vacine-fam" ng-click="setFamRegVac(fam, regVacina)">
+                                                <i class="fas fa-edit"></i></a></div>
+                                        <div class="col-sm-6 text-center">
+                                            <a href="" class="link-usu" data-toggle="modal" data-target="#del-reg-vac-fam" ng-click="setFamRegVac(fam, regVacina)">
+                                                <i class="fas fa-trash-alt"></i></a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <!-- Modal Register Vacine Usuario -->
+    <div class="modal fade" id="reg-vacine" tabindex="-1" role="dialog" aria-labelledby="modalLabelRegisterVacine" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabelRegisterVacine">Registrar Vacinação - {{$root.usuario.nome}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form role="form" >
+                        <input type="hidden" class="form-control" aria-label="Small" ng-model="vacinacao.paciente">
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="date" class="form-control" aria-label="Small" ng-model="vacinacao.data" date-format aria-describedby="data" placeholder="data">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="vacinacao.vacina" aria-describedby="vacina" placeholder="vacina">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="vacinacao.dose" aria-describedby="dose" placeholder="dose">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="vacinacao.local" aria-describedby="local" placeholder="local">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="vacinacao.agente" aria-describedby="agente" placeholder="agente">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="vacinacao.lote" aria-describedby="lote" placeholder="lote da vacina">
+                        </div>
+                        <div class="input-group mb-3 pl-3 mb-0">
+                            <div class="custom-control custom-radio col-sm-12">
+                                <input type="radio" id="rede_pub" name="customRadio" ng-model="vacinacao.rede" value="Pública" class="custom-control-input">
+                                <label class="custom-control-label small" for="rede_pub">Rede Pública</label>
+                            </div>
+                            <div class="custom-control custom-radio col-sm-12">
+                                <input type="radio" id="rede_pri" name="customRadio" ng-model="vacinacao.rede" value="Privada" class="custom-control-input">
+                                <label class="custom-control-label small" for="rede_pri">Rede Privada</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" ng-click="registrarVacina(vacinacao)" data-dismiss="modal">Registrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Register Vacine Familiar -->
+    <div class="modal fade" id="reg-vacine_fam" tabindex="-1" role="dialog" aria-labelledby="modalLabelRegisterVacineFam" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabelRegisterVacineFam">Registrar Vacinação - {{famVacinado.nome}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form role="form" >
+                        <input type="hidden" class="form-control" aria-label="Small" ng-model="vacinacao.paciente">
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="date" class="form-control" aria-label="Small" ng-model="vacinacao.data" date-format aria-describedby="data" placeholder="data">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="vacinacao.vacina" aria-describedby="vacina" placeholder="vacina">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="vacinacao.dose" aria-describedby="dose" placeholder="dose">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="vacinacao.local" aria-describedby="local" placeholder="local">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="vacinacao.agente" aria-describedby="agente" placeholder="agente">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="vacinacao.lote" aria-describedby="lote" placeholder="lote da vacina">
+                        </div>
+                        <div class="input-group mb-3 pl-3 mb-0">
+                            <div class="custom-control custom-radio col-sm-12">
+                                <input type="radio" id="rede_pub_v" name="customRadio" ng-model="vacinacao.rede" value="Pública" class="custom-control-input">
+                                <label class="custom-control-label small" for="rede_pub_v">Rede Pública</label>
+                            </div>
+                            <div class="custom-control custom-radio col-sm-12">
+                                <input type="radio" id="rede_pri_v" name="customRadio" ng-model="vacinacao.rede" value="Privada" class="custom-control-input">
+                                <label class="custom-control-label small" for="rede_pri_v">Rede Privada</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" ng-click="registrarVacina(vacinacao)" data-dismiss="modal">Registrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Delete Register Vacine -->
+    <div class="modal fade" id="del-reg-vac" tabindex="-1" role="dialog" aria-labelledby="modalLabelDeleteRegVac" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabelDeleteRegVac">Apagar Registro Vacinação <i class="fas fa-seringe"></i></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja apagar o registro da {{v.vacina}} - {{v.dose}}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteRegistroVacina(v)">Apagar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Delete Register Vacine Familiar -->
+    <div class="modal fade" id="del-reg-vac-fam" tabindex="-1" role="dialog" aria-labelledby="modalLabelDeleteRegVacFam" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabelDeleteRegVacFam">Apagar Registro Vacinação <i class="fas fa-seringe"></i></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja apagar o registro da {{va.vacina}} - {{va.dose}}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteRegistroVacina(va)">Apagar</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Update Vacine Usuário -->
+    <div class="modal fade" id="upd-vacine" tabindex="-1" role="dialog" aria-labelledby="modalLabelUpdateVacine" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabelUpdateVacine">Editar Vacinação - {{$root.usuario.nome}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form role="form" >
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="date" class="form-control" aria-label="Small" ng-model="v.data" date-format aria-describedby="data" placeholder="data">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="v.vacina" aria-describedby="vacina" placeholder="vacina">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="v.dose" aria-describedby="dose" placeholder="dose">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="v.local" aria-describedby="local" placeholder="local">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="v.agente" aria-describedby="agente" placeholder="agente">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="v.lote" aria-describedby="lote" placeholder="lote da vacina">
+                        </div>
+                        <div class="input-group mb-3 pl-3 mb-0">
+                            <div class="custom-control custom-radio col-sm-12">
+                                <input type="radio" id="rede_pub_" name="customRadio" ng-model="v.rede" value="Pública" class="custom-control-input">
+                                <label class="custom-control-label small" for="rede_pub_">Rede Pública</label>
+                            </div>
+                            <div class="custom-control custom-radio col-sm-12">
+                                <input type="radio" id="rede_pri_" name="customRadio" ng-model="v.rede" value="Privada" class="custom-control-input">
+                                <label class="custom-control-label small" for="rede_pri_">Rede Privada</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" ng-click="updateRegistroVacina(v)" data-dismiss="modal">Editar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Update Vacine Familiar -->
+    <div class="modal fade" id="upd-vacine-fam" tabindex="-1" role="dialog" aria-labelledby="modalLabelUpdateVacineFam" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabelUpdateVacineFam">Editar Vacinação - {{edFamVac.nome}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form role="form" >
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="date" class="form-control" aria-label="Small" ng-model="va.data" date-format aria-describedby="data" placeholder="data">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="va.vacina" aria-describedby="vacina" placeholder="vacina">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="va.dose" aria-describedby="dose" placeholder="dose">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="va.local" aria-describedby="local" placeholder="local">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="va.agente" aria-describedby="agente" placeholder="agente">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="va.lote" aria-describedby="lote" placeholder="lote da vacina">
+                        </div>
+                        <div class="input-group mb-3 pl-3 mb-0">
+                            <div class="custom-control custom-radio col-sm-12">
+                                <input type="radio" id="rede_pub_va" name="customRadio" ng-model="va.rede" value="Pública" class="custom-control-input">
+                                <label class="custom-control-label small" for="rede_pub_va">Rede Pública</label>
+                            </div>
+                            <div class="custom-control custom-radio col-sm-12">
+                                <input type="radio" id="rede_pri_va" name="customRadio" ng-model="va.rede" value="Privada" class="custom-control-input">
+                                <label class="custom-control-label small" for="rede_pri_va">Rede Privada</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" ng-click="updateRegistroVacina(va)" data-dismiss="modal">Editar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Details Vacina -->
+    <div class="modal fade" id="detail-vacine" tabindex="-1" role="dialog" aria-labelledby="modalLabelDetailVacina" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document" ng-controller="vacinaController">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabelDetailVacina"><i class="fas fa-syringe"></i> {{vac.vacina}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="card text-white bg-warning mb-3 col-sm-3 box-idade" ng-if="vac.grupoAlvo === 'Criança'" align="center" style="max-width: 18rem;">
+                            <div class="card-body">
+                                <p class="idade-vacina">{{exIdade(vac)}}</p>
+                            </div>
+                        </div>
+                        <div class="card text-white bg-success mb-3 col-sm-3 box-idade" ng-if="vac.grupoAlvo === 'Adolecente'" align="center" style="max-width: 18rem;">
+                            <div class="card-body">
+                                <p class="idade-vacina">{{exIdade(vac)}}</p>
+                            </div>
+                        </div>
+                        <div class="card text-white bg-info mb-3 col-sm-3 box-idade" ng-if="vac.grupoAlvo === 'Adulto'" align="center" style="max-width: 18rem;">
+                            <div class="card-body">
+                                <p class="idade-vacina">{{exIdade(vac)}}</p>
+                            </div>
+                        </div>
+                        <div class="card text-white bg-secondary mb-3 col-sm-3 box-idade" ng-if="vac.grupoAlvo === 'Idoso'" align="center" style="max-width: 18rem;">
+                            <div class="card-body">
+                                <p class="idade-vacina">{{exIdade(vac)}}</p>
+                            </div>
+                        </div>
+                        <div class="card text-white bg-danger mb-3 col-sm-3 box-idade" ng-if="vac.grupoAlvo === 'Gestante'" align="center" style="max-width: 18rem;">
+                            <div class="card-body">
+                                <p class="idade-vacina">{{exIdade(vac)}}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <p class="box-vacina"><b>Dose:</b> {{vac.dose}}</p><hr />
+                            <p class="box-vacina"><b>Descrição:</b> {{vac.descricao}}</p><hr />
+                            <p class="box-vacina"><b>Grupo Alvo:</b> {{vac.grupoAlvo}}</p><hr />
+                            <p class="box-vacina"><b>Contra indicação:</b> {{vac.contraIndicacao}}</p><hr />
+                            <p class="box-vacina"><b>Possíveis reações:</b> {{vac.possiveisReacoes}}</p><hr />
+                            <p class="box-vacina"><b>Rede Pública:</b> {{vac.publica}}</p><hr />
+                            <p class="box-vacina"><b>Rede Privada:</b> {{vac.privada}}</p><hr />
+                            <p class="box-vacina"><b>Observações:</b> {{vac.observacoes}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

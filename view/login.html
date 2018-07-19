@@ -1,0 +1,122 @@
+<!-- Page Content -->
+<div class="container" ng-controller="loginController">
+
+    <div class="row div-central">
+
+        <!-- Blog Entries Column -->
+        <div class="col-md-4">
+
+            <h5 class="my-4">Login <i class="fas fa-sign-in-alt"></i></h5>
+            <hr />
+
+            <div class="alert alert-danger" role="alert"
+                 ng-if="msg.cod === 308 || msg.cod === 310 || msg.cod === 311 || msg.cod === 312 || msg.cod === 355 || msg.cod === 356 ||
+                            msg.cod === 358 || msg.cod === 359 || msg.cod === 360">
+                <p class="mb-0"><small>{{msg.msg}}</small>
+                    <a href="" class="link-usu float-right" ng-click="reload()"><i class="fas fa-times"></i></a></p>
+            </div>
+            <div class="alert alert-success" role="alert" ng-if="msg.cod === 357 || msg.cod === 361 || msg.cod === 354">
+                <p class="mb-0"><small>{{msg.msg}}</small>
+                    <a href="" class="link-usu float-right" ng-click="reload()"><i class="fas fa-times"></i></a></p>
+            </div>
+            <div class="alert alert-warning" role="alert" ng-if="msg.cod === 309">
+                <p class="mb-0">
+                    <small>
+                        {{msg.msg}} <a href="" class="link-usu" data-toggle="modal" data-target="#act-con">ative aqui</a>
+                    </small>
+                        <a href="" class="link-usu float-right" ng-click="reload()"><i class="fas fa-times"></i></a></p>
+            </div>
+
+            <form role="form" >
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="email"><i class="fas fa-at"></i></span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Small" ng-model="usuario.email" aria-describedby="email">
+                </div>
+                <div class="input-group input-group-sm mb-2">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="senha"><i class="fas fa-unlock-alt"></i></span>
+                    </div>
+                    <input type="password" class="form-control" aria-label="Small" ng-model="usuario.senha" aria-describedby="senha">
+                </div>
+                <div class="float-right mb-1">
+                    <a href="" class="link-rec-senha" data-toggle="modal" data-target="#rec-sen">Esqueceu a senha?</a>
+                </div>
+                <button type="button" class="btn btn-info btn-sm btn-block" ng-click="login(usuario)">Login <i class="fas fa-sign-in-alt"></i></button>
+                <a href="#/register" class="btn btn-secondary btn-sm btn-block">cadastrar-se</a><br />
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Modal Recupera Senha -->
+    <div class="modal fade" id="rec-sen" tabindex="-1" role="dialog" aria-labelledby="modalLabelRecSenha" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabelRecSenha">Recuperar Senha <i class="fas fa-lock-open"></i></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-warning text-center" role="alert">
+                        <small>Informar dados cadastrados para receber no <strong>email</strong> uma nova senha!</small>
+                    </div>
+                    <form role="form">
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="user.email" aria-describedby="email" placeholder="email">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="user.tipo_sanguineo" aria-describedby="tipo_sanguineo" placeholder="tipo sanguineo">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="nascimento"><i class="fas fa-birthday-cake"></i></span>
+                            </div>
+                            <input type="date" class="form-control" aria-label="Small" ng-model="user.nascimento" aria-describedby="nascimento">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal" ng-click="recuperar(user)">Recuperar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Ativar conta -->
+    <div class="modal fade" id="act-con" tabindex="-1" role="dialog" aria-labelledby="modalLabelAtivarConta" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabelAtivarConta">Ativar Conta <i class="fas fa-check-circle"></i></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-warning text-center" role="alert">
+                        <small>Confime <strong>email e senha</strong> para ativar a conta!</small>
+                    </div>
+                    <form role="form">
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="user.email" aria-describedby="email" placeholder="email">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="password" class="form-control" aria-label="Small" ng-model="user.senha" aria-describedby="senha" placeholder="senha">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal" ng-click="ativar(user)">Ativar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+

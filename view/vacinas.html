@@ -1,0 +1,428 @@
+<div class="container" ng-controller="vacinaController">
+
+    <div class="row">
+
+        <!-- Title Page -->
+        <div class="col-md-12">
+            <h5 class="my-4">Calendário de Vacinas <i class="far fa-calendar-alt"></i>
+                <a href="" class="btn btn-success float-right" title="Cadastrar vacina" data-toggle="modal"
+                   data-target="#create_vacina" ng-show="$root.usuario.admin === true">
+                    <i class="fas fa-plus-circle"></i> Cadastrar Vacina</a>
+            </h5><hr />
+        </div>
+
+        <div class="col-md-12">
+
+            <div class="text-success">
+                <p><i class="fas fa-calendar-plus"></i> <small>Pertence ao Calendário Nacional de Vacinação 2018</small></p>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <h5 class="text-warning mt-3 pl-4">Criança <hr /></h5>
+                    <div class="ml-4 bd-callout bd-callout-warning">
+                        <div class="row pl-2">
+                            <div class="col-sm-2 div-vacina pb-2" ng-repeat="vacina in vacinas" ng-if="vacina.grupoAlvo === 'Criança'">
+                                <div class="card" style="height: 100%;">
+                                    <div class="card-body p-1">
+                                        <div class="alert alert-warning p-1 m-0" role="alert">
+                                            <p class="idade-vacina-sm text-sm-center">{{exIdade(vacina)}}</p>
+                                        </div>
+                                        <p class="text-vacina text-center pt-1"><b>{{vacina.vacina}}</b></p>
+                                        <p class="text-vacina pl-2"><i class="fas fa-calendar-plus text-success" ng-if="vacina.pni"></i></p>
+                                        <p class="text-vacina-sm"><b>Dose:</b>&nbsp;{{vacina.dose}}</p>
+                                        <p class="text-vacina-sm"><b>Rede Pública:</b>&nbsp;{{vacina.publica}}</p>
+                                        <p class="text-vacina-sm"><b>Rede Privada:</b>&nbsp;{{vacina.privada}}</p>
+                                    </div>
+                                    <div class="card-footer p-1">
+                                        <div class="row">
+                                            <div class="col-sm-4 text-center">
+                                                <a href="" class="link-usu" title="ver detalhes vacina" data-toggle="modal" data-target="#detail-vacine"
+                                                   ng-click="confirmVac(vacina)">
+                                                    <i class="fas fa-info-circle"></i></a></div>
+                                            <div class="col-sm-4 text-center">
+                                                <a href="" class="link-usu" title="editar vacina" data-toggle="modal" data-target="#update_vacina"
+                                                   ng-show="$root.usuario.admin === true" ng-click="confirmVac(vacina)">
+                                                    <i class="fas fa-edit"></i></a></div>
+                                            <div class="col-sm-4 text-center">
+                                                <a href="" class="link-usu" title="apagar vacina" data-toggle="modal" data-target="#delete-vacina"
+                                                   ng-show="$root.usuario.admin === true" ng-click="confirmVac(vacina)">
+                                                    <i class="fas fa-trash-alt"></i></a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <h5 class="text-success mt-3 pl-4">Adolecente <hr /></h5>
+                    <div class="ml-4 bd-callout bd-callout-success">
+                        <div class="row pl-2">
+                            <div class="col-sm-2 div-vacina pb-2" ng-repeat="vacina in vacinas" ng-if="vacina.grupoAlvo === 'Adolecente'">
+                                <div class="card" style="height: 100%;">
+                                    <div class="card-body p-1">
+                                        <div class="alert alert-success p-1 m-0" role="alert">
+                                            <p class="idade-vacina-sm text-sm-center">{{exIdade(vacina)}}</p>
+                                        </div>
+                                        <p class="text-vacina text-center pt-1"><b>{{vacina.vacina}}</b></p>
+                                        <p class="text-vacina pl-2"><i class="fas fa-calendar-plus text-success" ng-if="vacina.pni"></i></p>
+                                        <p class="text-vacina-sm"><b>Dose:</b>&nbsp;{{vacina.dose}}</p>
+                                        <p class="text-vacina-sm"><b>Rede Pública:</b>&nbsp;{{vacina.publica}}</p>
+                                        <p class="text-vacina-sm"><b>Rede Privada:</b>&nbsp;{{vacina.privada}}</p>
+                                    </div>
+                                    <div class="card-footer p-1">
+                                        <div class="row">
+                                            <div class="col-sm-4 text-center">
+                                                <a href="" class="link-usu" title="ver detalhes vacina" data-toggle="modal" data-target="#detail-vacine"
+                                                   ng-click="confirmVac(vacina)">
+                                                    <i class="fas fa-info-circle"></i></a></div>
+                                            <div class="col-sm-4 text-center">
+                                                <a href="" class="link-usu" title="editar vacina" data-toggle="modal" data-target="#update_vacina"
+                                                   ng-show="$root.usuario.admin === true" ng-click="confirmVac(vacina)">
+                                                    <i class="fas fa-edit"></i></a></div>
+                                            <div class="col-sm-4 text-center">
+                                                <a href="" class="link-usu" title="apagar vacina" data-toggle="modal" data-target="#delete-vacina"
+                                                   ng-show="$root.usuario.admin === true" ng-click="confirmVac(vacina)">
+                                                    <i class="fas fa-trash-alt"></i></a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <h5 class="text-info mt-3 pl-4">Adulto <hr /></h5>
+                    <div class="ml-4 bd-callout bd-callout-info">
+                        <div class="row pl-2">
+                            <div class="col-sm-2 div-vacina pb-2" ng-repeat="vacina in vacinas" ng-if="vacina.grupoAlvo === 'Adulto'">
+                                <div class="card" style="height: 100%;">
+                                    <div class="card-body p-1">
+                                        <div class="alert alert-info p-1 m-0" role="alert">
+                                            <p class="idade-vacina-sm text-sm-center">{{exIdade(vacina)}}</p>
+                                        </div>
+                                        <p class="text-vacina text-center pt-1"><b>{{vacina.vacina}}</b></p>
+                                        <p class="text-vacina pl-2"><i class="fas fa-calendar-plus text-success" ng-if="vacina.pni"></i></p>
+                                        <p class="text-vacina-sm"><b>Dose:</b>&nbsp;{{vacina.dose}}</p>
+                                        <p class="text-vacina-sm"><b>Rede Pública:</b>&nbsp;{{vacina.publica}}</p>
+                                        <p class="text-vacina-sm"><b>Rede Privada:</b>&nbsp;{{vacina.privada}}</p>
+                                    </div>
+                                    <div class="card-footer p-1">
+                                        <div class="row">
+                                            <div class="col-sm-4 text-center">
+                                                <a href="" class="link-usu" title="ver detalhes vacina" data-toggle="modal" data-target="#detail-vacine"
+                                                   ng-click="confirmVac(vacina)">
+                                                    <i class="fas fa-info-circle"></i></a></div>
+                                            <div class="col-sm-4 text-center">
+                                                <a href="" class="link-usu" title="editar vacina" data-toggle="modal" data-target="#update_vacina"
+                                                   ng-show="$root.usuario.admin === true" ng-click="confirmVac(vacina)">
+                                                    <i class="fas fa-edit"></i></a></div>
+                                            <div class="col-sm-4 text-center">
+                                                <a href="" class="link-usu" title="apagar vacina" data-toggle="modal" data-target="#delete-vacina"
+                                                   ng-show="$root.usuario.admin === true" ng-click="confirmVac(vacina)">
+                                                    <i class="fas fa-trash-alt"></i></a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                        <h5 class="text-secondary mt-3 pl-4">Idoso <hr /></h5>
+                    <div class="ml-4 bd-callout bd-callout-secundary">
+                        <div class="row pl-2">
+                            <div class="col-sm-2 div-vacina pb-2" ng-repeat="vacina in vacinas" ng-if="vacina.grupoAlvo === 'Idoso'">
+                                <div class="card" style="height: 100%;">
+                                    <div class="card-body p-1">
+                                        <div class="alert alert-secondary p-1 m-0" role="alert">
+                                            <p class="idade-vacina-sm text-sm-center">{{exIdade(vacina)}}</p>
+                                        </div>
+                                        <p class="text-vacina text-center pt-1"><b>{{vacina.vacina}}</b></p>
+                                        <p class="text-vacina pl-2"><i class="fas fa-calendar-plus text-success" ng-if="vacina.pni"></i></p>
+                                        <p class="text-vacina-sm"><b>Dose:</b>&nbsp;{{vacina.dose}}</p>
+                                        <p class="text-vacina-sm"><b>Rede Pública:</b>&nbsp;{{vacina.publica}}</p>
+                                        <p class="text-vacina-sm"><b>Rede Privada:</b>&nbsp;{{vacina.privada}}</p>
+                                    </div>
+                                    <div class="card-footer p-1">
+                                        <div class="row">
+                                            <div class="col-sm-4 text-center">
+                                                <a href="" class="link-usu" title="ver detalhes vacina" data-toggle="modal" data-target="#detail-vacine"
+                                                   ng-click="confirmVac(vacina)">
+                                                    <i class="fas fa-info-circle"></i></a></div>
+                                            <div class="col-sm-4 text-center">
+                                                <a href="" class="link-usu" title="editar vacina" data-toggle="modal" data-target="#update_vacina"
+                                                   ng-show="$root.usuario.admin === true" ng-click="confirmVac(vacina)">
+                                                    <i class="fas fa-edit"></i></a></div>
+                                            <div class="col-sm-4 text-center">
+                                                <a href="" class="link-usu" title="apagar vacina" data-toggle="modal" data-target="#delete-vacina"
+                                                   ng-show="$root.usuario.admin === true" ng-click="confirmVac(vacina)">
+                                                    <i class="fas fa-trash-alt"></i></a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <h5 class="text-danger mt-3 pl-4">Gestante <hr /></h5>
+                    <div class="ml-4 bd-callout bd-callout-danger">
+                        <div class="row pl-2">
+                            <div class="col-sm-2 div-vacina pb-2" ng-repeat="vacina in vacinas" ng-if="vacina.grupoAlvo === 'Gestante'">
+                                <div class="card" style="height: 100%;">
+                                    <div class="card-body p-1">
+                                        <div class="alert alert-danger p-1 m-0" role="alert">
+                                            <p class="idade-vacina-sm text-sm-center">{{exIdade(vacina)}} de gestação</p>
+                                        </div>
+                                        <p class="text-vacina text-center pt-1"><b>{{vacina.vacina}}</b></p>
+                                        <p class="text-vacina pl-2"><i class="fas fa-calendar-plus text-success" ng-if="vacina.pni"></i></p>
+                                        <p class="text-vacina-sm"><b>Dose:</b>&nbsp;{{vacina.dose}}</p>
+                                        <p class="text-vacina-sm"><b>Rede Pública:</b>&nbsp;{{vacina.publica}}</p>
+                                        <p class="text-vacina-sm"><b>Rede Privada:</b>&nbsp;{{vacina.privada}}</p>
+                                    </div>
+                                    <div class="card-footer p-1">
+                                        <div class="row">
+                                            <div class="col-sm-4 text-center">
+                                                <a href="" class="link-usu" title="ver detalhes vacina" data-toggle="modal" data-target="#detail-vacine"
+                                                   ng-click="confirmVac(vacina)">
+                                                    <i class="fas fa-info-circle"></i></a></div>
+                                            <div class="col-sm-4 text-center">
+                                                <a href="" class="link-usu" title="editar vacina" data-toggle="modal" data-target="#update_vacina"
+                                                   ng-show="$root.usuario.admin === true" ng-click="confirmVac(vacina)">
+                                                    <i class="fas fa-edit"></i></a></div>
+                                            <div class="col-sm-4 text-center">
+                                                <a href="" class="link-usu" title="apagar vacina" data-toggle="modal" data-target="#delete-vacina"
+                                                   ng-show="$root.usuario.admin === true" ng-click="confirmVac(vacina)">
+                                                    <i class="fas fa-trash-alt"></i></a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Register Vacina -->
+    <div class="modal fade" id="create_vacina" tabindex="-1" role="dialog" aria-labelledby="modalLabelRegisterVacina" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabelRegisterVacina">Cadastrar Vacina <i class="fas fa-syringe"></i></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form role="form" >
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="vacina.vacina" aria-describedby="vacina" placeholder="vacina">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <textarea type="text" class="form-control" aria-label="Small" ng-model="vacina.descricao" aria-describedby="descricao" placeholder="descrição"></textarea>
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="vacina.dose" aria-describedby="dose" placeholder="dose">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="number" class="form-control" aria-label="Small" ng-model="vacina.idadeInicialAno" aria-describedby="idadeInicialAno" placeholder="Ano inicial">&nbsp;
+                            <input type="number" class="form-control" aria-label="Small" ng-model="vacina.idadeInicialMes" aria-describedby="idadeInicialMes" placeholder="Mês inicial">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="number" class="form-control" aria-label="Small" ng-model="vacina.idadeFinalAno" aria-describedby="idadeFinalAno" placeholder="Ano final">&nbsp;
+                            <input type="number" class="form-control" aria-label="Small" ng-model="vacina.idadeFinalMes" aria-describedby="idadeFinalMes" placeholder="Mês final">
+                        </div>
+                        <div class="input-group input-group-sm mb-2">
+                            <div class="input-group mb-2">
+                                <select class="custom-select custom-select-sm" id="grupo_alvo" ng-model="vacina.grupoAlvo">
+                                    <option value="">Grupo Alvo</option>
+                                    <option value="Criança">Criança</option>
+                                    <option value="Adolecente">Adolecente</option>
+                                    <option value="Adulto">Adulto</option>
+                                    <option value="Idoso">Idoso</option>
+                                    <option value="Gestante">Gestante</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <textarea type="text" class="form-control" aria-label="Small" ng-model="vacina.contraIndicacao" aria-describedby="contraIndicacao" placeholder="contra indicações"></textarea>
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <textarea type="text" class="form-control" aria-label="Small" ng-model="vacina.possiveisReacoes" aria-describedby="possiveisReacoes" placeholder="possíveis reações"></textarea>
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="vacina.publica" aria-describedby="publica" placeholder="Rede Pública">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="vacina.privada" aria-describedby="privada" placeholder="Rede Privada">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <textarea type="text" class="form-control" aria-label="Small" ng-model="vacina.observacoes" aria-describedby="observacoes" placeholder="observações"></textarea>
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" aria-label="Small" id="pni" ng-model="vacina.pni" value="false">
+                                <label class="custom-control-label small" for="pni">Programa Nacional de Imunizações (PNI)</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" ng-click="save(vacina)" data-dismiss="modal">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Update Vacina -->
+    <div class="modal fade" id="update_vacina" tabindex="-1" role="dialog" aria-labelledby="modalLabelUpdateVacina" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabelUpdateVacina">Atualizar Vacina <i class="fas fa-syringe"></i></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form role="form" >
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="vac.vacina" aria-describedby="vacina" placeholder="vacina">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <textarea type="text" class="form-control" aria-label="Small" ng-model="vac.descricao" aria-describedby="descricao" placeholder="descrição"></textarea>
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="vac.dose" aria-describedby="dose" placeholder="dose">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="number" class="form-control" aria-label="Small" ng-model="vac.idadeInicialAno" aria-describedby="idadeInicialAno" placeholder="ano início">&nbsp;
+                            <input type="number" class="form-control" aria-label="Small" ng-model="vac.idadeInicialMes" aria-describedby="idadeInicialMes" placeholder="mês início">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="vac.idadeFinalAno" aria-describedby="idadeFinalAno" placeholder="ano final">&nbsp;
+                            <input type="number" class="form-control" aria-label="Small" ng-model="vac.idadeFinalMes" aria-describedby="idadeFinalMes" placeholder="mês final">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="vac.grupoAlvo" aria-describedby="grupoAlvo" placeholder="grupo alvo">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <textarea type="text" class="form-control" aria-label="Small" ng-model="vac.contraIndicacao" aria-describedby="contraIndicacao" placeholder="contra indicação"></textarea>
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <textarea type="text" class="form-control" aria-label="Small" ng-model="vac.possiveisReacoes" aria-describedby="possiveisReacoes" placeholder="possíveis reações"></textarea>
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="vac.publica" aria-describedby="publica" placeholder="rede pública">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="vac.privada" aria-describedby="privada" placeholder="rede privada">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <textarea type="text" class="form-control" aria-label="Small" ng-model="vac.observacoes" aria-describedby="observacoes" placeholder="observações"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" ng-click="update(vac)" data-dismiss="modal">Atualizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Delete Vacina -->
+    <div class="modal fade" id="delete-vacina" tabindex="-1" role="dialog" aria-labelledby="modalLabelDeleteVacina" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabelDeleteVacina">Apagar Vacina <i class="fas fa-syringe"></i></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja apagar {{vac.vacina}}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-danger" ng-click="delete(vac)" data-dismiss="modal">Apagar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Details Vacina -->
+    <div class="modal fade" id="detail-vacine" tabindex="-1" role="dialog" aria-labelledby="modalLabelDetailVacina" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document" ng-controller="vacinaController">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabelDetailVacina"><i class="fas fa-syringe"></i> {{vac.vacina}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="card text-white bg-warning mb-3 col-sm-3 box-idade" ng-if="vac.grupoAlvo === 'Criança'" align="center" style="max-width: 18rem;">
+                            <div class="card-body">
+                                <p class="idade-vacina">{{exIdade(vac)}}</p>
+                            </div>
+                        </div>
+                        <div class="card text-white bg-success mb-3 col-sm-3 box-idade" ng-if="vac.grupoAlvo === 'Adolecente'" align="center" style="max-width: 18rem;">
+                            <div class="card-body">
+                                <p class="idade-vacina">{{exIdade(vac)}}</p>
+                            </div>
+                        </div>
+                        <div class="card text-white bg-info mb-3 col-sm-3 box-idade" ng-if="vac.grupoAlvo === 'Adulto'" align="center" style="max-width: 18rem;">
+                            <div class="card-body">
+                                <p class="idade-vacina">{{exIdade(vac)}}</p>
+                            </div>
+                        </div>
+                        <div class="card text-white bg-secondary mb-3 col-sm-3 box-idade" ng-if="vac.grupoAlvo === 'Idoso'" align="center" style="max-width: 18rem;">
+                            <div class="card-body">
+                                <p class="idade-vacina">{{exIdade(vac)}}</p>
+                            </div>
+                        </div>
+                        <div class="card text-white bg-danger mb-3 col-sm-3 box-idade" ng-if="vac.grupoAlvo === 'Gestante'" align="center" style="max-width: 18rem;">
+                            <div class="card-body">
+                                <p class="idade-vacina">{{exIdade(vac)}} de gestação</p>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <p class="box-vacina"><b>Dose:</b> {{vac.dose}}</p><hr />
+                            <p class="box-vacina"><b>Descrição:</b> {{vac.descricao}}</p><hr />
+                            <p class="box-vacina"><b>Grupo Alvo:</b> {{vac.grupoAlvo}}</p><hr />
+                            <p class="box-vacina"><b>Contra indicação:</b> {{vac.contraIndicacao}}</p><hr />
+                            <p class="box-vacina"><b>Possíveis reações:</b> {{vac.possiveisReacoes}}</p><hr />
+                            <p class="box-vacina"><b>Rede Pública:</b> {{vac.publica}}</p><hr />
+                            <p class="box-vacina"><b>Rede Privada:</b> {{vac.privada}}</p><hr />
+                            <p class="box-vacina"><b>Observações:</b> {{vac.observacoes}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

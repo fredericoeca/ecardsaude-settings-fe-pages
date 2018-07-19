@@ -1,0 +1,411 @@
+.btn-msg {
+    width: 50px;
+}
+
+.status-color-publish {
+    color: #28a745;
+}
+
+.status-color-wait {
+    color: #17a2b8;
+}
+
+.status-color-recused {
+    color: #dc3545;
+}
+
+.home{
+    margin-top: 30px;
+}
+
+.dado-pet{
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.header-pets{
+    background: #17a2b8;
+    color: #ffffff;
+}
+
+.header-fams{
+    background-color: #28a745;
+    color: #ffffff;
+}
+
+.body-padding{
+    padding-bottom: 0;
+}
+
+a.link-pets {
+    color: #ffffff;
+}
+
+a:hover.link-pets {
+    color: #ADD8E6;
+}
+
+a.link-fams{
+    color: #ffffff;
+}
+
+a:hover.link-fams{
+    color: #C1FFC1;
+}
+
+a.link-alerta-usu {
+    color: #000000;
+}
+
+a:hover.link-alerta-usu {
+    color: #5a6268;
+}
+
+.btn-reg-pet{
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+
+a.link-pets-int{
+    color: #ADD8E6;
+}
+
+a:hover.link-pets-int{
+    color: #17a2b8;
+}
+
+a.link-fams-int{
+    color: #28a745;
+}
+
+a:hover.link-fams-int{
+    color: #228B22;
+}
+
+a.link-usu{
+    color: #828282;
+}
+
+a:hover.l#00FF00ink-usu{
+    color: #CFCFCF;
+}
+
+a.link-alerta-fam{
+    color: #28a745;
+}
+
+a:hover.link-alerta-fam{
+    color: #C1FFC1;
+}
+
+.scroll-div{
+    max-height: 600px;
+    overflow: auto;
+}
+
+.noticias{
+    max-height: 1000px;
+}
+
+.scroll-div::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    -webkit-border-radius: 3px;
+}
+
+.scroll-div::-webkit-scrollbar-track-piece {
+    background-color: #ffffff;
+    -webkit-border-radius: 3px;
+}
+
+.scroll-div::-webkit-scrollbar-thumb:vertical {
+    height: 5px;
+    background-color: #E8E8E8;
+    -webkit-border-radius: 3px;
+}
+
+.scroll-div::-webkit-scrollbar-thumb:horizontal {
+    width: 5px;
+    background-color: #E8E8E8;
+    -webkit-border-radius: 3px;
+}
+
+.idade-vacina {
+    margin-bottom: 0;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.idade-vacina-sm {
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.box-idade{
+    margin-bottom: 0!important;
+    margin-left: 1rem!important;
+}
+
+.box-vacina {
+    text-align: justify;
+    font-size: 12px;
+}
+
+.rodape {
+    position: absolute;
+}
+
+.text-notification{
+    font-size: 12px;
+}
+
+.txt-like{
+    font-size: 11px;
+    color: #868e96;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.color-like{
+    color: #ff0000;
+}
+
+.centralizado{
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.div-central{
+    display: flex;
+    vertical-align: middle;
+    justify-content: center;
+}
+
+.card-padding-alerta-body{
+    padding: .50rem 1rem;
+}
+
+.card-padding-alerta-footer{
+    padding: .25rem 1rem;
+}
+
+.btn-sm-alerta{
+    padding: .0rem .5rem;
+}
+
+.btn-warning-undo{
+    color: #ffffff;
+}
+
+.btn-warning-undo:hover{
+    color: #ffffff;
+}
+
+.titulo-noticia{
+    background-color: #999999;
+}
+
+.cartao-vacina-bg{
+    background-color: #ADD8E6;
+    color: #4682B4;
+}
+
+.int-card-vac{
+    padding: 10px;
+}
+
+.int-reg-vac{
+    padding: 5px;
+}
+
+.tex-dec{
+    padding: 1px;
+    margin: 0;
+    font-size: 11px;
+}
+
+.tit-dec{
+    padding: 1px;
+    margin-bottom: 2px;
+    font-size: 12px;
+}
+
+.bd-callout {
+    padding: 1.25rem;
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+    border: 1px solid #eee;
+    border-left-width: .25rem;
+    border-radius: .25rem;
+}
+
+.bd-callout-danger {
+    border-left-color: #d9534f!important;
+}
+
+.bd-callout-warning {
+    border-left-color: #ffc107!important;
+}
+
+.bd-callout-success {
+    border-left-color: #28a745!important;
+}
+
+.bd-callout-info {
+    border-left-color: #17a2b8!important;
+}
+
+.bd-callout-secundary {
+    border-left-color: #6c757d!important;
+}
+
+.alert-vacina{
+    padding: 0;
+    margin-bottom: 0;
+}
+
+.div-vacina{
+    padding-left: 0;
+    padding-right: 10px;
+}
+
+.text-vacina{
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.text-vacina-sm{
+    margin-bottom: 5px;
+    font-size: 12px;
+    padding-left: 10px;
+}
+
+.scroll-div-cartao-vacina{
+    max-height: 190px;
+    overflow: auto;
+}
+
+.familia{
+    max-height: 130px;
+}
+
+.scroll-div-cartao-vacina::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    -webkit-border-radius: 3px;
+}
+
+.scroll-div-cartao-vacina::-webkit-scrollbar-track-piece {
+    background-color: #ffffff;
+    -webkit-border-radius: 3px;
+}
+
+.scroll-div-cartao-vacina::-webkit-scrollbar-thumb:vertical {
+    height: 5px;
+    background-color: #E8E8E8;
+    -webkit-border-radius: 3px;
+}
+
+.scroll-div-cartao-vacina::-webkit-scrollbar-thumb:horizontal {
+    width: 5px;
+    background-color: #E8E8E8;
+    -webkit-border-radius: 3px;
+}
+
+a.link-rec-senha{
+    color: #17a2b8;
+    font-family: inherit;
+    font-size: .875rem;
+    font-weight: 400;
+}
+
+a:hover.link-rec-senha{
+    color: #138496;
+    text-decoration: none;
+    font-family: inherit;
+    font-size: .875rem;
+    font-weight: 400;
+}
+
+.br-0{
+    border-radius: 0!important;
+}
+
+.vertical {
+    height: 100%;
+    display:         flex;
+    display: -webkit-flex; /* Garante compatibilidade com navegador Safari. */
+    justify-content: center;
+    align-items: center;
+}
+
+.scroll_vertical {
+    width: 200px;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+a.link-reg-vac{
+    color: #6c757d;
+}
+
+a:hover.link-reg-vac{
+    background-color: #999999;
+    color: #ffffff;
+}
+
+/* Center the loader */
+.loader {
+    border: 5px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 5px solid #3498db;
+    width: 35px;
+    height: 35px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+}
+
+/* Safari */
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.justificado{
+    text-align: justify;
+}
+
+.bg-grey{
+    background-color: #E8E8E8;
+}
+
+.altura-link{
+    padding-top: 0.15rem;
+}
+
+a.link-cuid{
+    color: #E8E8E8;
+}
+
+a:hover.link-cuid{
+    color: #6c757d;
+}
+
+textarea{
+    resize: none; /* impede que o próprio usuário altere o tamanho do textarea */
+    width:300px;
+    height:80px;
+    overflow-y: auto;
+}

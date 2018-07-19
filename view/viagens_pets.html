@@ -1,0 +1,450 @@
+<div class="container" ng-controller="viagensController">
+
+    <div class="row">
+
+        <!-- Title Page -->
+        <div class="col-md-12">
+            <h5 class="my-4">Cuidados com Saúde em Viagens <i class="fas fa-rocket"></i>
+                <a href="" class="btn btn-success float-right" title="Cadastrar vacina" data-toggle="modal"
+                   data-target="#create_info" ng-show="$root.usuario.admin === true">
+                    <i class="fas fa-plus-circle"></i> Cadastrar</a>
+            </h5><hr />
+        </div>
+
+        <div class="col-sm-12">
+            <div class="card mb-3" ng-controller="municipiosController">
+                <div class="card-body p-0">
+                    <div class="row">
+                        <div class="col-sm-2 text-center bg-secondary pr-3 pt-2 pb-2">
+                            <i class="fas fa-map-marker-alt text-white"></i> <span class="text-white"> &nbsp;&nbsp;Destino</span>
+                        </div>
+                        <div class="col-sm-3 pl-3 pt-1 pb-1">
+                            <div class="input-group input-group-sm">
+                                <div class="input-group">
+                                    <div class="input-group-prepend ">
+                                        <label class="input-group-text" for="estado"><i class="fas fa-map-marker-alt"></i></label>
+                                    </div>
+                                    <select class="custom-select custom-select-sm" id="estado" ng-required="true"
+                                            ng-options="e.nome_uf for e in municipios track by e.sigla_uf" ng-model="estado">
+                                        <option value="">estado para onde vai...</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 pl-1 pt-1 pb-1">
+                            <div class="input-group input-group-sm">
+                                <div class="input-group">
+                                    <div class="input-group-prepend ">
+                                        <label class="input-group-text" for="cidade"><i class="fas fa-map-marker-alt"></i></label>
+                                    </div>
+                                    <select class="custom-select custom-select-sm" id="cidade"
+                                            ng-options="m.nome_municipio for m in estado.cidades track by m.nome_municipio" ng-model="cidade">
+                                        <option value="">cidade para onde vai...</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2 pl-1 pt-1 pb-1">
+                            <button class="btn btn-info btn-sm btn-block" ng-click="pesquisar(estado, cidade)">
+                                <i class="fas fa-search"></i> pesquisar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row ml-2 mr-2" ng-if="!fi">
+            <div class="col-sm-6 pr-2 pl-0 pb-2" ng-repeat="i in infos">
+                <div class="card"  style="height: 100%">
+                    <h6 class="card-header bg-info text-white"><span>{{i.tipo}}
+                        <span class="float-right">
+                            <a class="link-cuid" href="" data-toggle="modal" data-target="#update_info" ng-click="setInfo(i)"
+                               title="editar informativo" ng-if="$root.usuario.admin">
+                                    <i class="fas fa-edit"></i></a>&nbsp;&nbsp;
+                               <a class="link-cuid" href="" data-toggle="modal" data-target="#delete-info" ng-click="setInfo(i)"
+                                  title="apagar informativo" ng-if="$root.usuario.admin">
+                                    <i class="far fa-trash-alt"></i></a>
+                        </span>
+                    </span></h6>
+                    <div class="card-body">
+                        <p class="text-secondary"><b>{{i.titulo}}</b></p>
+                        <p class="text-secondary bg-grey pl-1 mb-2"><small><b>Descrição</b></small></p>
+                        <p class="text-secondary justificado"><small>{{i.descricao}}</small></p>
+                        <p class="text-secondary bg-grey pl-1 mb-2"><small><b>Ator</b></small></p>
+                        <p class="text-secondary justificado"><small>{{i.ator}}</small></p>
+                        <p class="text-secondary bg-grey pl-1 mb-2"><small><b>Cuidados</b>
+                            <a class="link-usu float-right pr-2 altura-link" href="" data-toggle="modal" data-target="#create_cuidado"
+                               ng-click="setInfo(i)" ng-if="$root.usuario.admin">
+                                adicionar</a>
+                        </small></p>
+                        <p class="text-secondary justificado" ng-repeat="c in i.cuidados"><small>
+                            <i class="fas fa-caret-right"></i> {{c.cuidado}}<br ng-if="$root.usuario.admin" />
+                            <a class="link-cuid" href="" data-toggle="modal" data-target="#update-cuidado" ng-click="setInfoCuidado(i, c)"
+                               title="editar cuidado" ng-if="$root.usuario.admin">
+                                <i class="fas fa-edit"></i></a>&nbsp;&nbsp;
+                            <a class="link-cuid" href="" data-toggle="modal" data-target="#delete-cuidado" ng-click="setInfoCuidado(i, c)"
+                               title="apagar cuidado" ng-if="$root.usuario.admin">
+                                <i class="far fa-trash-alt"></i></a>
+                        </small></p>
+                        <p class="text-secondary bg-grey pl-1 mb-2"><small><b>Locais Atingidos</b>
+                            <a class="link-usu float-right pr-2 altura-link" href="" data-toggle="modal" data-target="#create_local"
+                               ng-click="setInfo(i)" ng-if="$root.usuario.admin">
+                                adicionar</a>
+                        </small></p>
+                        <p class="text-secondary small mb-2" ng-if="i.paises.length > 0"><b>Paises</b><br />
+                            <i class="fas fa-caret-right"></i>
+                            <span ng-repeat="p in i.paises">
+                                <span ng-if="$index < i.paises.length -1">{{p.local}},&nbsp;</span>
+                                <span ng-if="$index === i.paises.length -1">{{p.local}}.</span>
+                            </span>
+                        </p>
+                        <p class="text-secondary small mb-2" ng-if="i.regioes.length > 0"><b>Regiões</b><br />
+                            <i class="fas fa-caret-right"></i>
+                            <span ng-repeat="r in i.regioes">
+                                <span ng-if="$index < i.regioes.length -1">{{r.local}},&nbsp;</span>
+                                <span ng-if="$index === i.regioes.length -1">{{r.local}}.</span>
+                            </span>
+                        </p>
+                        <p class="text-secondary small mb-2" ng-if="i.estados.length > 0"><b>Estados</b><br />
+                            <i class="fas fa-caret-right"></i>
+                            <span ng-repeat="e in i.estados">
+                                <span ng-if="$index < i.estados.length -1">{{e.local}},&nbsp;</span>
+                                <span ng-if="$index === i.estados.length -1">{{e.local}}.</span>
+                            </span>
+                        </p>
+                        <p class="text-secondary small mb-2" ng-if="i.cidades.length > 0"><b>Cidades</b><br />
+                            <i class="fas fa-caret-right"></i>
+                            <span ng-repeat="c in i.cidades">
+                                <span ng-if="$index < i.cidades.length -1">{{c.local}},&nbsp;</span>
+                                <span ng-if="$index === i.cidades.length -1">{{c.local}}.</span>
+                            </span>
+                        </p>
+                        <p class="text-secondary bg-grey pl-1 mt-2 mb-2"><small><b>Observações</b></small></p>
+                        <p class="text-secondary justificado mb-0"><small>{{i.observacoes}}</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row ml-2 mr-2" ng-if="fi">
+            <div class="col-sm-12">
+                <p class="text-secondary bg-grey pl-1 mb-2">
+                    <small ng-if="finds.length === 0">Não foram encontradas recomendações específicas para essa localidade. </small>
+                    <small ng-if="finds.length === 1">Foi encontrada {{finds.length}} recomendação.</small>
+                    <small ng-if="finds.length > 1">Foram encontradas {{finds.length}} recomendações.</small>
+                </p>
+            </div>
+            <div class="col-sm-6 pr-2 pl-0 pb-2" ng-repeat="i in finds">
+                <div class="card"  style="height: 100%">
+                    <h6 class="card-header bg-info text-white"><span>{{i.tipo}}
+                         <span class="float-right">
+                            <a class="link-cuid" href="" data-toggle="modal" data-target="#update_info" ng-click="setInfo(i)"
+                               title="editar informativo" ng-if="$root.usuario.admin">
+                                    <i class="fas fa-edit"></i></a>&nbsp;&nbsp;
+                               <a class="link-cuid" href="" data-toggle="modal" data-target="#delete-info" ng-click="setInfo(i)"
+                                  title="apagar informativo" ng-if="$root.usuario.admin">
+                                    <i class="far fa-trash-alt"></i></a>
+                        </span>
+                    </span></h6>
+                    <div class="card-body">
+                        <p class="text-secondary"><b>{{i.titulo}}</b></p>
+                        <p class="text-secondary bg-grey pl-1 mb-2"><small><b>Descrição</b></small></p>
+                        <p class="text-secondary justificado"><small>{{i.descricao}}</small></p>
+                        <p class="text-secondary bg-grey pl-1 mb-2"><small><b>Ator</b></small></p>
+                        <p class="text-secondary justificado"><small>{{i.ator}}</small></p>
+                        <p class="text-secondary bg-grey pl-1 mb-2"><small><b>Cuidados</b>
+                            <a class="link-usu float-right pr-2 altura-link" href="" data-toggle="modal" data-target="#create_cuidado"
+                               ng-click="setInfo(i)" ng-if="$root.usuario.admin">
+                                adicionar</a>
+                        </small></p>
+                        <p class="text-secondary justificado" ng-repeat="c in i.cuidados"><small>
+                            <i class="fas fa-caret-right"></i> {{c.cuidado}}<br ng-if="$root.usuario.admin" />
+                            <a class="link-cuid" href="" data-toggle="modal" data-target="#update-cuidado" ng-click="setInfoCuidado(i, c)"
+                               title="editar cuidado" ng-if="$root.usuario.admin">
+                                <i class="fas fa-edit"></i></a>&nbsp;&nbsp;
+                            <a class="link-cuid" href="" data-toggle="modal" data-target="#delete-cuidado" ng-click="setInfoCuidado(i, c)"
+                               title="apagar cuidado" ng-if="$root.usuario.admin">
+                                <i class="far fa-trash-alt"></i></a>
+                        </small></p>
+                        <p class="text-secondary bg-grey pl-1 mb-2"><small><b>Locais Atingidos</b>
+                            <a class="link-usu float-right pr-2 altura-link" href="" data-toggle="modal" data-target="#create_local"
+                               ng-click="setInfo(i)" ng-if="$root.usuario.admin">
+                                adicionar</a>
+                        </small></p>
+                        <p class="text-secondary small mb-2" ng-if="i.paises.length > 0"><b>Paises</b><br />
+                            <i class="fas fa-caret-right"></i>
+                            <span ng-repeat="p in i.paises">
+                                <span ng-if="$index < i.paises.length -1">{{p.local}},&nbsp;</span>
+                                <span ng-if="$index === i.paises.length -1">{{p.local}}.</span>
+                            </span>
+                        </p>
+                        <p class="text-secondary small mb-2" ng-if="i.regioes.length > 0"><b>Regiões</b><br />
+                            <i class="fas fa-caret-right"></i>
+                            <span ng-repeat="r in i.regioes">
+                                <span ng-if="$index < i.regioes.length -1">{{r.local}},&nbsp;</span>
+                                <span ng-if="$index === i.regioes.length -1">{{r.local}}.</span>
+                            </span>
+                        </p>
+                        <p class="text-secondary small mb-2" ng-if="i.estados.length > 0"><b>Estados</b><br />
+                            <i class="fas fa-caret-right"></i>
+                            <span ng-repeat="e in i.estados">
+                                <span ng-if="$index < i.estados.length -1">{{e.local}},&nbsp;</span>
+                                <span ng-if="$index === i.estados.length -1">{{e.local}}.</span>
+                            </span>
+                        </p>
+                        <p class="text-secondary small mb-2" ng-if="i.cidades.length > 0"><b>Cidades</b><br />
+                            <i class="fas fa-caret-right"></i>
+                            <span ng-repeat="c in i.cidades">
+                                <span ng-if="$index < i.cidades.length -1">{{c.local}},&nbsp;</span>
+                                <span ng-if="$index === i.cidades.length -1">{{c.local}}.</span>
+                            </span>
+                        </p>
+                        <p class="text-secondary bg-grey pl-1 mt-2 mb-2"><small><b>Observações</b></small></p>
+                        <p class="text-secondary justificado mb-0"><small>{{i.observacoes}}</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal Create Informative -->
+    <div class="modal fade" id="create_info" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Criar Informativo de Cuidado <i class="fas fa-rocket"></i></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form role="form" >
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="info.titulo" aria-describedby="titulo" placeholder="Titulo">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="info.tipo" aria-describedby="tipo" placeholder="Tipo">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <textarea class="form-control" aria-label="With textarea" ng-model="info.descricao" placeholder="Descrição"></textarea>
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="info.ator" aria-describedby="ator" placeholder="Ator">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <textarea type="text" class="form-control" aria-label="Small" ng-model="info.observacoes" aria-describedby="observacoes" placeholder="Observações"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="save(info)">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal update Informative -->
+    <div class="modal fade" id="update_info" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelupd" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabelupd">Editar Informativo de Cuidado <i class="fas fa-rocket"></i></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form role="form" >
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="inf.titulo" aria-describedby="titulo" placeholder="Titulo">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="inf.tipo" aria-describedby="tipo" placeholder="Tipo">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <textarea class="form-control" aria-label="With textarea" ng-model="inf.descricao" placeholder="Descrição"></textarea>
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <input type="text" class="form-control" aria-label="Small" ng-model="inf.ator" aria-describedby="ator" placeholder="Ator">
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <textarea type="text" class="form-control" aria-label="Small" ng-model="inf.observacoes" aria-describedby="observacoes" placeholder="Observações"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="update(inf)">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal delete Cuidado -->
+    <div class="modal fade" id="delete-info" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabeldel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabeldel">Apagar Informativo <i class="fas fa-exclamation-triangle"></i></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form role="form" >
+                        <p>Deseja apagar o informativo?<br /> {{inf.titulo}}</p>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="delete(inf._id)">Apagar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Create Cuidado -->
+    <div class="modal fade" id="create_cuidado" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel1">Inserir Cuidado <i class="fas fa-exclamation-triangle"></i></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form role="form" >
+                        <div class="input-group input-group-sm mb-3">
+                            <textarea type="text" class="form-control" aria-label="Small" ng-model="cuidado" aria-describedby="cuidado" placeholder="Cuidado"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="registrarCuidado(inf._id, cuidado)">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal update Cuidado -->
+    <div class="modal fade" id="update-cuidado" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel2">Editar Cuidado <i class="fas fa-exclamation-triangle"></i></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form role="form" >
+                        <div class="input-group input-group-sm mb-3">
+                            <textarea type="text" class="form-control" aria-label="Small" ng-model="cuid.cuidado" aria-describedby="cuidado" placeholder="Cuidado"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="updateCuidado(infs._id, cuid)">Editar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal delete Cuidado -->
+    <div class="modal fade" id="delete-cuidado" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel3">Apagar Cuidado <i class="fas fa-exclamation-triangle"></i></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form role="form" >
+                        <p>Deseja apagar o registro de cuidado?<br /> {{cuid.cuidado.substring(0,40)}}...</p>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteCuidado(infs._id, cuid)">Apagar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Create Local -->
+    <div class="modal fade" id="create_local" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel4" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel4">Inserir Local <i class="fas fa-map-marker-alt"></i></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form role="form" >
+                        <div class="input-group input-group-sm mb-2">
+                            <div class="input-group mb-2">
+                                <div class="input-group-prepend ">
+                                    <label class="input-group-text" for="tipo"><i class="fas fa-map"></i></label>
+                                </div>
+                                <select class="custom-select custom-select-sm" id="tipo" ng-model="localizacao.tipo">
+                                    <option value="">tipos localizacao...</option>
+                                    <option value="País">País</option>
+                                    <option value="Região">Região</option>
+                                    <option value="Estado">Estado</option>
+                                    <option value="Cidade">Cidade</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="local"><i class="fas fa-map-pin"></i></span>
+                            </div>
+                            <input type="text" class="form-control" aria-label="Small" ng-model="localizacao.local"
+                                   placeholder="Local" aria-describedby="local">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="registrarLocal(inf._id, localizacao)">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal update Cuidado -->
+    <div class="modal fade" id="update-local" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel5" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel5">Editar Cuidado <i class="fas fa-exclamation-triangle"></i></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form role="form" >
+                        <div class="input-group input-group-sm mb-3">
+                            <textarea type="text" class="form-control" aria-label="Small" ng-model="cuid.cuidado" aria-describedby="cuidado" placeholder="Cuidado"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="updateCuidado(infs._id, cuid)">Editar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteCuidado(infs._id, cuid)">Apagar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
